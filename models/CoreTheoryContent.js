@@ -12,7 +12,7 @@ const CoreTheoryContent = mongoose.Schema({
   view: { type: Number, required: false },
   like: { type: Number, required: false },
   minRead: { type: Number, required: true },
-  content: { type: Object, required: true },
+  contentData: { type: Object, required: true },
 });
 
 module.exports = Core_Theory_Content = mongoose.model(

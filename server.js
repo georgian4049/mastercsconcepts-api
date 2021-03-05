@@ -17,7 +17,7 @@ app.get("/", (req, res) => res.send("API Request"));
 app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/user", require("./routes/api/users"));
 app.use("/api/requests", require("./routes/api/request"));
-app.use("/api/core-theory-content", require("./routes/api/coreTheoryContent"));
+app.use("/api/content", require("./routes/api/coreTheoryContent"));
 app.use("/api/mail", require("./routes/api/mail"));
 app.use("/api/services", require("./routes/api/service"));
 

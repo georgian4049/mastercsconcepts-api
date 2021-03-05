@@ -6,7 +6,13 @@ const Core_Theory_Content = require("../../models/CoreTheoryContent");
 
 router.get("/", async (req, res) => {
   try {
-    const coreTheoryContent = await Core_Theory_Content.find(req.body);
+    const { courseArea, courseSubArea, materialCategory } = req.query;
+    console.log(req.query);
+    const coreTheoryContent = await Core_Theory_Content.find({
+      courseArea,
+      courseSubArea,
+      materialCategory,
+    });
     return res.status(200).json({ data: coreTheoryContent });
   } catch (error) {
     return res.status(500).json({ errors: { message: "Server Error" } });
