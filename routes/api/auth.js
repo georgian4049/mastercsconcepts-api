@@ -56,7 +56,7 @@ router.post(
       };
 
       const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {
-        expiresIn: 36000,
+        algorithm: "HS256",
       });
       return res.status(200).json({
         access_token: token,
@@ -68,5 +68,33 @@ router.post(
     }
   }
 );
+
+router.post("/refresh", async (req, res) => {
+  try {
+    const inititalToken = req.body.token;
+    const { identity } = jwt.decode(inititalToken, config.get("jwtSecret"));
+    const { email } = identity;
+    let user = await User.findOne({ email });
+    if (user) {
+      const payload = {
+        email: user.email,
+      };
+      const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {
+        algorithm: "HS256",
+      });
+      return res.status(200).json({
+        access_token: token,
+        username: user.username,
+        name: user.firstName + " " + user.lastName,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Please Log in to access content",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ errors: { message: "Server Error" } });
+  }
+});
 
 module.exports = router;
