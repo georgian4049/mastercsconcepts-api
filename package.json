@@ -1,11 +1,10 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "cloud-aws-request-app api",
+  "description": "mastercsconcepts api",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
+    "start": "nodemon server.js",
   },
   "author": "",
   "license": "ISC",
