@@ -33,8 +33,9 @@ router.post("/", async (req, res) => {
         .status(200)
         .json({ message: `Content saved successfully. Content -> ${a}` });
     } else {
-      return res.status(201).json({
-        data: "You have already submitted similar content. Please change title",
+      await Core_Theory_Content.findOneAndUpdate(req.body.id, req.body);
+      return res.status(200).json({
+        data: "Updated Successfully",
       });
     }
   } catch (error) {
