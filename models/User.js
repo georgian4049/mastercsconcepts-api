@@ -24,11 +24,11 @@ const UserSchema = new mongoose.Schema({
   },
   profession: {
     type: String,
-    required: true,
+    required: false,
   },
   interest: {
     type: Array,
-    required: true,
+    required: false,
   },
 });
 
