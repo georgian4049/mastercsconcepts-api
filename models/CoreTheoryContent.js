@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const CoreTheoryContent = mongoose.Schema({
-  _id: { type: String, required: true },
   courseArea: { type: String, required: true },
   courseSubArea: { type: String, required: true },
   materialCategory: { type: String, required: true },
