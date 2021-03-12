@@ -5,6 +5,7 @@ const CoreTheoryContent = mongoose.Schema({
   courseSubArea: { type: String, required: true },
   materialCategory: { type: String, required: true },
   authorUsername: { type: String, required: true },
+  authorName: { type: String, required: true },
   title: { type: String, required: true },
   tags: { type: Array, required: false },
   datePublished: { type: Date, required: true },
