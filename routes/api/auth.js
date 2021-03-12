@@ -92,6 +92,7 @@ router.post("/refresh", async (req, res) => {
     if (user) {
       const payload = {
         email: user.email,
+        username: user.username,
       };
       const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {
         algorithm: "HS256",
