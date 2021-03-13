@@ -7,6 +7,7 @@ const CoreTheoryContent = mongoose.Schema({
   authorUsername: { type: String, required: true },
   authorName: { type: String, required: true },
   title: { type: String, required: true },
+  description: { type: String, required: true },
   tags: { type: Array, required: false },
   datePublished: { type: Date, required: true },
   view: { type: Number, required: false },

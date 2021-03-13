@@ -43,6 +43,8 @@ router.post(
         access_token: token,
         username: user.username,
         name: user.firstName + " " + user.lastName,
+        likedContentsId: user.likedContentsId,
+        commentedContentsId: user.commentedContentsId,
       });
     } catch (error) {
       return res.status(500).json({ errors: { message: "Server Error" } });
@@ -101,6 +103,8 @@ router.post("/refresh", async (req, res) => {
         access_token: token,
         username: user.username,
         name: user.firstName + " " + user.lastName,
+        likedContentsId: user.likedContentsId,
+        commentedContentsId: user.commentedContentsId,
       });
     } else {
       return res.status(400).json({

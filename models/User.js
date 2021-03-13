@@ -30,6 +30,14 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     required: false,
   },
+  likedContentsId: {
+    type: Array,
+    required: false,
+  },
+  commentedContentsId: {
+    type: Array,
+    required: false,
+  },
 });
 
 module.exports = User = mongoose.model("User", UserSchema);
