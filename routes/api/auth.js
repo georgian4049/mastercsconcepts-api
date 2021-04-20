@@ -77,9 +77,20 @@ router.post("/register", async (req, res) => {
       password: pass,
     });
     await user.save();
-    return res
-      .status(200)
-      .json({ message: { message: `Users ${user.username}Added` } });
+    const payload = {
+      email: user.email,
+    };
+
+    const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {
+      algorithm: "HS256",
+    });
+    return res.status(200).json({
+      access_token: token,
+      username: username,
+      name: firstName + " " + lastName,
+      likedContentsId: 0,
+      commentedContentsId: 0,
+    });
   } catch (error) {
     return res.status(500).json({ errors: { message: "Server Error" } });
   }
