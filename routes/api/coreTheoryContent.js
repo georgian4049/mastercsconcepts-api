@@ -115,7 +115,7 @@ router.post(
   async (req, res) => {
     try {
       const { username } = req.user;
-      const { _id } = req.params;
+      const { _id, courseArea, courseSubArea, materialCategory } = req.params;
       let user = await User.findOne({ username });
       if (!user) {
         return res
@@ -184,7 +184,12 @@ router.post(
         },
       ]);
 
-      return res.status(200).json({ message: `Bookmarked successfully.` });
+      const coreTheoryContent = await Core_Theory_Content.find({
+        courseArea,
+        courseSubArea,
+        materialCategory,
+      });
+      return res.status(200).json({ data: coreTheoryContent });
     } catch (error) {
       return res.status(500).json({ errors: { message: error.message } });
     }
