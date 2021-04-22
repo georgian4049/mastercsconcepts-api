@@ -33,7 +33,7 @@ router.post(
       }
 
       const payload = {
-        email: user.email,
+        username: user.username,
       };
 
       const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {
@@ -78,7 +78,7 @@ router.post("/register", async (req, res) => {
     });
     await user.save();
     const payload = {
-      email: user.email,
+      username: user.username,
     };
 
     const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {
@@ -100,11 +100,10 @@ router.post("/refresh", async (req, res) => {
   try {
     const inititalToken = req.body.token;
     const { identity } = jwt.decode(inititalToken, config.get("jwtSecret"));
-    const { email } = identity;
-    let user = await User.findOne({ email });
+    const { username } = identity;
+    let user = await User.findOne({ username });
     if (user) {
       const payload = {
-        email: user.email,
         username: user.username,
       };
       const token = jwt.sign({ identity: payload }, config.get("jwtSecret"), {

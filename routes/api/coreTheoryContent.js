@@ -113,9 +113,9 @@ router.post(
   auth,
   async (req, res) => {
     try {
-      const { email } = req.user;
+      const { username } = req.user;
       const { _id } = req.params;
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ username });
       if (!user) {
         return res
           .status(401)
@@ -127,41 +127,68 @@ router.post(
           errors: { message: "No Such Content exists" },
         });
       }
-      await User.findOneAndUpdate({ email: email }, [
+      await User.findOneAndUpdate({ username }, [
         {
           $set: {
             bookmarked: {
-              $cond: [
-                {
-                  $in: [_id, "$bookmarked"],
+              $cond: {
+                if: {
+                  $ne: [{ $type: "$bookmarked" }, "array"],
                 },
-                {
-                  $setDifference: ["$bookmarked", [_id]],
+                then: [_id],
+                else: {
+                  $cond: [
+                    {
+                      $in: [_id, "$bookmarked"],
+                    },
+                    {
+                      $setDifference: ["$bookmarked", [_id]],
+                    },
+                    {
+                      $concatArrays: ["$bookmarked", [_id]],
+                    },
+                  ],
                 },
-                {
-                  $concatArrays: ["$bookmarked", [_id]],
-                },
-              ],
+              },
             },
           },
         },
       ]);
+      //     { "$addFields": {
+      //   "permissions": {
+      //     "$cond": {
+      //       "if": {
+      //         "$ne": [ { "$type": "$permissions" }, "array" ]
+      //       },
+      //       "then": [],
+      //       "else": "$permissions"
+      //     }
+      //   }
+      // }}
 
       await Core_Theory_Content.findByIdAndUpdate(_id, [
         {
           $set: {
             bookmarkedBy: {
-              $cond: [
-                {
-                  $in: [email, "$bookmarkedBy"],
+              $cond: {
+                if: {
+                  $ne: [{ $type: "$bookmarkedBy" }, "array"],
                 },
-                {
-                  $setDifference: ["$bookmarkedBy", [email]],
+                then: [username],
+                else: {
+                  $cond: [
+                    {
+                      $in: [username, "$bookmarkedBy"],
+                    },
+                    {
+                      $setDifference: ["$bookmarkedBy", [username]],
+                    },
+                    {
+                      $concatArrays: ["$bookmarkedBy", [username]],
+                    },
+                  ],
                 },
-                {
-                  $concatArrays: ["$bookmarkedBy", [email]],
-                },
-              ],
+              },
             },
           },
         },
