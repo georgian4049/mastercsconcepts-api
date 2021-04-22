@@ -43,6 +43,7 @@ router.post("/", auth, async (req, res) => {
     return res.status(500).json({ errors: { message: error.message } });
   }
 });
+
 router.put("/", auth, async (req, res) => {
   try {
     if (req.user.username !== req.body.authorUsername) {
@@ -154,17 +155,6 @@ router.post(
           },
         },
       ]);
-      //     { "$addFields": {
-      //   "permissions": {
-      //     "$cond": {
-      //       "if": {
-      //         "$ne": [ { "$type": "$permissions" }, "array" ]
-      //       },
-      //       "then": [],
-      //       "else": "$permissions"
-      //     }
-      //   }
-      // }}
 
       await Core_Theory_Content.findByIdAndUpdate(_id, [
         {
