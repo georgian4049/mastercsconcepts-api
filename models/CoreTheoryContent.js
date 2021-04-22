@@ -14,6 +14,7 @@ const CoreTheoryContent = mongoose.Schema({
   like: { type: Number, required: false },
   minRead: { type: Number, required: true },
   contentData: { type: Object, required: true },
+  bookmarkedBy: { type: Array, required: true },
 });
 
 module.exports = Core_Theory_Content = mongoose.model(

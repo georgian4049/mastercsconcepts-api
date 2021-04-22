@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     required: false,
   },
+  bookmarked: {
+    type: Array,
+    required: true,
+  },
 });
 
 module.exports = User = mongoose.model("User", UserSchema);

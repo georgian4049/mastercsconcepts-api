@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 const Core_Theory_Content = require("../../models/CoreTheoryContent");
+const User = require("../../models/User");
 
 router.get("/", async (req, res) => {
   try {
@@ -106,5 +107,71 @@ router.post("/like/:_id", auth, async (req, res) => {
     return res.status(500).json({ errors: { message: error.message } });
   }
 });
+
+router.post(
+  "/bookmark/:courseArea/:courseSubArea/:materialCategory/:_id",
+  auth,
+  async (req, res) => {
+    try {
+      const { email } = req.user;
+      const { _id } = req.params;
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res
+          .status(401)
+          .json({ errors: { message: "Unauthorized Access" } });
+      }
+      const exists = await Core_Theory_Content.findOne({ _id });
+      if (!exists) {
+        return res.status(400).json({
+          errors: { message: "No Such Content exists" },
+        });
+      }
+      await User.findOneAndUpdate({ email: email }, [
+        {
+          $set: {
+            bookmarked: {
+              $cond: [
+                {
+                  $in: [_id, "$bookmarked"],
+                },
+                {
+                  $setDifference: ["$bookmarked", [_id]],
+                },
+                {
+                  $concatArrays: ["$bookmarked", [_id]],
+                },
+              ],
+            },
+          },
+        },
+      ]);
+
+      await Core_Theory_Content.findByIdAndUpdate(_id, [
+        {
+          $set: {
+            bookmarkedBy: {
+              $cond: [
+                {
+                  $in: [email, "$bookmarkedBy"],
+                },
+                {
+                  $setDifference: ["$bookmarkedBy", [email]],
+                },
+                {
+                  $concatArrays: ["$bookmarkedBy", [email]],
+                },
+              ],
+            },
+          },
+        },
+      ]);
+
+      return res.status(200).json({ message: `Bookmarked successfully.` });
+    } catch (error) {
+      return res.status(500).json({ errors: { message: error.message } });
+    }
+  }
+);
 
 module.exports = router;
