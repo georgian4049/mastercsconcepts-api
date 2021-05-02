@@ -8,11 +8,16 @@ const User = require("../../models/User");
 router.get("/", async (req, res) => {
   try {
     const { courseArea, courseSubArea, materialCategory } = req.query;
-    const coreTheoryContent = await Core_Theory_Content.find({
+    let coreTheoryContent = await Core_Theory_Content.find({
       courseArea,
       courseSubArea,
       materialCategory,
     });
+
+    if (!courseArea) {
+      coreTheoryContent = await Core_Theory_Content.find();
+    }
+
     return res.status(200).json({ data: coreTheoryContent });
   } catch (error) {
     return res.status(500).json({ errors: { message: "Server Error" } });
