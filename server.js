@@ -20,6 +20,7 @@ app.use("/api/requests", require("./routes/api/request"));
 app.use("/api/content", require("./routes/api/coreTheoryContent"));
 app.use("/api/mail", require("./routes/api/mail"));
 app.use("/api/services", require("./routes/api/service"));
+app.use("/api/query", require("./routes/api/query"));
 
 const PORT = process.env.PORT || 5000;
 
