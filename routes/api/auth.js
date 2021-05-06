@@ -43,6 +43,7 @@ router.post(
         access_token: token,
         username: user.username,
         name: user.firstName + " " + user.lastName,
+        email: email,
         likedContentsId: user.likedContentsId,
         commentedContentsId: user.commentedContentsId,
       });
@@ -89,6 +90,7 @@ router.post("/register", async (req, res) => {
       access_token: token,
       username: username,
       name: firstName + " " + lastName,
+      email: email,
       likedContentsId: 0,
       commentedContentsId: 0,
     });
@@ -114,6 +116,7 @@ router.post("/refresh", async (req, res) => {
         access_token: token,
         username: user.username,
         name: user.firstName + " " + user.lastName,
+        email: user.email,
         likedContentsId: user.likedContentsId,
         commentedContentsId: user.commentedContentsId,
       });
@@ -123,6 +126,7 @@ router.post("/refresh", async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ errors: { message: "Server Error" } });
   }
 });
